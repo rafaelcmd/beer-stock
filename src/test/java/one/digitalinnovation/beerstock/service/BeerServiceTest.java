@@ -18,6 +18,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.greaterThan;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
 
@@ -52,7 +53,18 @@ public class BeerServiceTest {
         assertThat(createdBeerDTO.getQuantity(), is(equalTo(expectedBeerDTO.getQuantity())));
 
         assertThat(createdBeerDTO.getQuantity(), is(greaterThan(2)));
+    }
 
+    @Test
+    void whenAlreadyRegisteredBeerInformedThenAnExceptionShouldBeThrown() {
+        // given
+        BeerDTO expectedBeerDTO = BeerDTOBuilder.builder().build().toBeerDTO();
+        Beer duplicatedBeer = beerMapper.toModel(expectedBeerDTO);
 
+        // when
+        when(beerRepository.findByName(expectedBeerDTO.getName())).thenReturn(Optional.of(duplicatedBeer));
+
+        // then
+        assertThrows(BeerAlreadyRegisteredException.class, () -> beerService.createBeer(expectedBeerDTO));
     }
 }
