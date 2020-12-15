@@ -14,11 +14,12 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 
-import static org.hamcrest.MatcherAssert.*;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.*;
+import static org.hamcrest.Matchers.greaterThan;
+import static org.mockito.Mockito.when;
+
 
 @ExtendWith(MockitoExtension.class)
 public class BeerServiceTest {
@@ -50,7 +51,8 @@ public class BeerServiceTest {
         assertThat(createdBeerDTO.getName(), is(equalTo(expectedBeerDTO.getName())));
         assertThat(createdBeerDTO.getQuantity(), is(equalTo(expectedBeerDTO.getQuantity())));
 
-        assertEquals(expectedBeerDTO.getId(), createdBeerDTO.getId());
-        assertEquals(expectedBeerDTO.getName(), createdBeerDTO.getName());
+        assertThat(createdBeerDTO.getQuantity(), is(greaterThan(2)));
+
+
     }
 }
